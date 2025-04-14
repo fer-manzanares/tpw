@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Tec. de Prog. Web</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body th:attr="onload='setDates()'">
+<nav  th:replace="fragments/info :: header" ></nav>
+
+<form th:object="${product}"  th:action="@{/product}" method="post" >
+  <label>Nombre:</label>
+  <input type = "text" th:field="*{name}" required="true"/>
+  <br>
+  <label>Código:</label>
+  <input type = "text" th:field="*{productNumber}" required/>
+  <br>
+  <label>Se fabrica?:</label>
+  <input type = "number" th:field="*{makeFlag}" required min="0" max="1"/>
+  <br>
+  <label>Finished Goods Flag:</label>
+  <input type = "number"  th:field="*{finishedGoodsFlag}" required min="0" max="1"/>
+  <br>
+  <label>Color:</label>
+  <select class="form-select" th:field = "*{color}" aria-label="Estado" id="stateSelect">
+    <option th:each = "color : ${colors}" th:value="${color}" th:text="${color}">
+    </option>
+  </select>
+  <br>
+
+  <label>Stock seguro:</label>
+  <input type = "number" th:field="*{safetyStockLevel}" required min="1" max="2000"/>
+  <br>
+
+  <label>Punto de reorden:</label>
+  <input type = "number" th:field="*{reorderPoint}" required min="1" max="1000"/>
+  <br>
+
+  <label>Costo:</label>
+  <input type = "number" th:field="*{standardCost}"  min="0" max="100000" step="0.01" required/>
+  <br>
+
+  <label>Precio de lista:</label>
+  <input type = "number" th:field="*{listPrice}" min="1" max="1000000" step="0.01" required/>
+  <br>
+
+  <label>Días de manufactura:</label>
+  <input type = "number" th:field="*{daysToManufacture}" min="0" max="365" required/>
+  <br>
+  <input type = "number" th:field="*{productId}" hidden/>
+  <label>Fecha de inicio de venta:</label>
+  <input type = "date" th:field="*{sellStartDate}" id="sellStartDate" required/>
+  <br>
+
+  <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  function setDates() {
+    console.log('Setting dates');
+    //if (/*[[${post}]]*/) return;
+
+    const strSellStartDate = /*[[${#temporals.format(product.sellStartDate, 'yyyy-MM-dd')}]]*/;
+    const initDate = document.getElementById('sellStartDate');
+    initDate.value = strSellStartDate
+    console.log("Fecha de inicio de venta: " + strSellStartDate)
+  }
+
+  /*]]>*/
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
